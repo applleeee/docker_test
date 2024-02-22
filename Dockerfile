@@ -4,10 +4,20 @@ FROM node:20
 WORKDIR /app
 
 # 필요한 패키지를 설치합니다.
-RUN apt-get update && apt-get install -y \
-    build-essential
+RUN apt-get update && apt-get install -y locales && apt-get install -y build-essential
 
 ARG USERNAME=node
+
+# /etc/locale.gen 파일에 ko_KR.UTF-8 로케일을 추가
+RUN echo "ko_KR.UTF-8 UTF-8" > /etc/locale.gen
+
+# locale-gen 명령을 사용하여 로케일을 생성
+RUN locale-gen
+
+# 환경 변수 설정
+ENV LC_ALL=ko_KR.UTF-8
+ENV LANG=ko_KR.UTF-8
+ENV LANGUAGE=ko_KR.UTF-8
 
 # RUN echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \ && chmod 0440 /etc/sudoers.d/$USERNAME
 ENV DEVCONTAINER=true
